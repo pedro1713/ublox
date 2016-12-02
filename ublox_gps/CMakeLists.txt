@@ -14,6 +14,9 @@ catkin_package(
     CATKIN_DEPENDS roscpp ublox_msgs ublox_serialization)
 
 # include boost
+set(Boost_USE_STATIC_LIBS OFF)
+set(Boost_MULTITHREADED ON)
+set(Boost_USE_STATIC_RUNTIME OFF)
 find_package(Boost REQUIRED COMPONENTS system regex thread)
 link_directories(${Boost_LIBRARY_DIR})
 include_directories(${Boost_INCLUDE_DIR})
@@ -32,9 +35,7 @@ add_library(ublox_gps src/gps.cpp)
 add_dependencies(ublox_gps ${catkin_EXPORTED_TARGETS})
 
 target_link_libraries(ublox_gps
-  boost_system
-  boost_regex
-  boost_thread
+  ${Boost_LIBRARIES}
 )
 
 target_link_libraries(ublox_gps
@@ -45,7 +46,7 @@ target_link_libraries(ublox_gps
 add_executable(ublox_gps_node src/node.cpp)
 set_target_properties(ublox_gps_node PROPERTIES OUTPUT_NAME ublox_gps)
 
-target_link_libraries(ublox_gps_node boost_system boost_regex boost_thread)
+target_link_libraries(ublox_gps_node ${Boost_LIBRARIES})
 target_link_libraries(ublox_gps_node ${catkin_LIBRARIES})
 target_link_libraries(ublox_gps_node ublox_gps)
 

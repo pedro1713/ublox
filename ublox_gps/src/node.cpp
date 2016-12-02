@@ -418,9 +418,9 @@ int main(int argc, char** argv) {
       throw std::runtime_error(ss.str());
     }
     if (!gps.enableSBAS(enable_sbas)) {
-      throw std::runtime_error(std::string("Failed to ") +
-                               ((enable_sbas) ? "enable" : "disable") +
-                               " SBAS.");
+      //throw std::runtime_error(std::string("Failed to ") +
+      //                         ((enable_sbas) ? "enable" : "disable") +
+      //                         " SBAS.");
     }
     if (!gps.setPPPEnabled(enable_ppp)) {
       throw std::runtime_error(std::string("Failed to ") +
