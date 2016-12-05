@@ -7,7 +7,7 @@
 #
 
 uint8 CLASS_ID = 1
-uint8 MESSAGE_ID = 2
+uint8 MESSAGE_ID = 7
 
 uint32 iTOW             # GPS Millisecond Time of Week [ms]
 
