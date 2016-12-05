@@ -37,6 +37,7 @@
 #include <ros/serialization.h>
 #include <ublox_msgs/CfgGNSS.h>
 #include <ublox_msgs/NavPOSLLH.h>
+#include <ublox_msgs/NavPVT.h>
 #include <ublox_msgs/NavSOL.h>
 #include <ublox_msgs/NavSTATUS.h>
 #include <ublox_msgs/NavVELNED.h>
@@ -116,6 +117,12 @@ void publishNavVelNED(const ublox_msgs::NavVELNED& m) {
 
   velocityPublisher.publish(velocity);
   last_nav_vel = m;
+}
+
+void publishNavPVT(const ublox_msgs::NavPVT& m) {
+  static ros::Publisher publisher =
+      nh->advertise<ublox_msgs::NavPVT>("navpvt", kROSQueueSize);
+  publisher.publish(m);
 }
 
 void publishNavPosLLH(const ublox_msgs::NavPOSLLH& m) {
@@ -510,6 +517,9 @@ int main(int argc, char** argv) {
                    enabled["all"] || enabled["rxm"]);
     if (enabled["rxm_sfrb"])
       gps.subscribe<ublox_msgs::RxmSFRB>(&publishRxmSFRB, 1);
+    param_nh.param("nav_pvt", enabled["nav_pvt"], true);
+    if (enabled["nav_pvt"])
+      gps.subscribe<ublox_msgs::NavPVT>(&publishNavPVT, 1);
     param_nh.param("nav_posllh", enabled["nav_posllh"], true);
     if (enabled["nav_posllh"])
       gps.subscribe<ublox_msgs::NavPOSLLH>(&publishNavPosLLH, 1);
