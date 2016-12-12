@@ -59,6 +59,7 @@ boost::shared_ptr<diagnostic_updater::Updater> updater;
 boost::shared_ptr<diagnostic_updater::TopicDiagnostic> freq_diag;
 Gps gps;
 ublox_msgs::NavSTATUS status;
+ublox_msgs::NavPVT pvt;
 std::map<std::string, bool> enabled;
 std::string frame_id;
 int num_svs_used = 0;
@@ -146,8 +147,8 @@ void publishNavPosLLH(const ublox_msgs::NavPOSLLH& m) {
   fix.latitude = m.lat * 1e-7;
   fix.longitude = m.lon * 1e-7;
   fix.altitude = m.height * 1e-3;
-  if ((RTK_flags & RTK_FLOAT)||(RTK_flags & RTK_FIXED))
-    fix.status.status = fix.STATUS_GBAS_FIX;
+  if ((RTK_flags & pvt.RTK_FLOAT)||(RTK_flags & pvt.RTK_FIXED))
+    fix.status.status = 2;
   else if (status.gpsFix >= status.GPS_2D_FIX)
     fix.status.status = fix.status.STATUS_FIX;
   else
