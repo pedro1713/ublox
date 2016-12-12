@@ -62,6 +62,7 @@ ublox_msgs::NavSTATUS status;
 std::map<std::string, bool> enabled;
 std::string frame_id;
 int num_svs_used = 0;
+int RTK_flags = 0;
 
 ublox_msgs::NavPOSLLH last_nav_pos;
 ublox_msgs::NavVELNED last_nav_vel;
@@ -123,6 +124,7 @@ void publishNavPVT(const ublox_msgs::NavPVT& m) {
   static ros::Publisher publisher =
       nh->advertise<ublox_msgs::NavPVT>("navpvt", kROSQueueSize);
   publisher.publish(m);
+  RTK_flags = m.flags;
 }
 
 void publishNavPosLLH(const ublox_msgs::NavPOSLLH& m) {
@@ -144,7 +146,9 @@ void publishNavPosLLH(const ublox_msgs::NavPOSLLH& m) {
   fix.latitude = m.lat * 1e-7;
   fix.longitude = m.lon * 1e-7;
   fix.altitude = m.height * 1e-3;
-  if (status.gpsFix >= status.GPS_2D_FIX)
+  if ((RTK_flags & RTK_FLOAT)||(RTK_flags & RTK_FIXED))
+    fix.status.status = fix.STATUS_GBAS_FIX;
+  else if (status.gpsFix >= status.GPS_2D_FIX)
     fix.status.status = fix.status.STATUS_FIX;
   else
     fix.status.status = fix.status.STATUS_NO_FIX;

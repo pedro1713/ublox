@@ -9,7 +9,7 @@
     <arg name="rate" default="10"/>
 
     <!-- SBAS enabled -->
-    <arg name="enable_sbas" default="false"/>
+    <arg name="enable_sbas" default="true"/>
 
     <!-- See Ublox docs -->
     <arg name="dynamic_model" default="portable"/>
