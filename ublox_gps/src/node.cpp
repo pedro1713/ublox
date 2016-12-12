@@ -148,7 +148,7 @@ void publishNavPosLLH(const ublox_msgs::NavPOSLLH& m) {
   fix.longitude = m.lon * 1e-7;
   fix.altitude = m.height * 1e-3;
   if ((RTK_flags & pvt.RTK_FLOAT)||(RTK_flags & pvt.RTK_FIXED))
-    fix.status.status = 2;
+    fix.status.status = fix.status.STATUS_GBAS_FIX;
   else if (status.gpsFix >= status.GPS_2D_FIX)
     fix.status.status = fix.status.STATUS_FIX;
   else
